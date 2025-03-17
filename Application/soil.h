@@ -7,6 +7,8 @@
 #define SOIL_MOISTURE_C_COEF      (float)-227.272724
 #define SOIL_STATE_UPPER_THRESH   60 //%
 #define SOIL_STATE_LOWER_THRESH   30 //%
+#define SOIL_SETTLING_DELAY       5000 //mS
+#define SOIL_SETTLING_REPETITIONS 10
 
 typedef enum
 {
@@ -28,7 +30,8 @@ typedef struct
 class Soil
 {
   public:
-    Soil();
+    Soil(void);
+    void LP_Filter_Settle(soil_health_t *soil_record);
     void Get_Soil_Health(soil_health_t *soil_record);
 };
 

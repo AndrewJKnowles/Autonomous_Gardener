@@ -5,6 +5,6 @@
 
 #ifdef EN_DEBUGGING
 #define ENABLE_SERIAL_PRINTS
-
 #endif //EN_DEBUGGING
+
 #endif //DEBUG_DEFS_H

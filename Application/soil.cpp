@@ -3,7 +3,17 @@
 #include <Arduino.h>
 #include "debug_defs.h"
 
-Soil::Soil(){};
+Soil::Soil(void){};
+
+/***/
+void Soil::LP_Filter_Settle(soil_health_t *soil_record)
+{
+  for(int i = 0; i < SOIL_SETTLING_REPETITIONS; i++)
+  {
+    Get_Soil_Health(soil_record);
+    delay(SOIL_SETTLING_DELAY);
+  }
+}
 
 /***/
 void Soil::Get_Soil_Health(soil_health_t *soil_record)
