@@ -3,6 +3,7 @@
 #include "pinout.h"
 #include "debug_defs.h"
 #include "pwr_mngr.h"
+#include "timer.h"
 
 water_pump_t WATER_PUMP =
 {
@@ -16,37 +17,30 @@ soil_health_t SOIL_HEALTH = {0};
 Pump Pump(&WATER_PUMP);
 Soil Soil;
 PWR_MNGR PWR;
+Timer Timer_1(0);
 
-int timer1_compare_match;
-
+/********************
+* @brief Timer 1 ISR
+**********************/
 ISR(TIMER1_COMPA_vect)
 {
-  digitalWrite(10, !digitalRead(10));
+  digitalWrite(LED_1, !digitalRead(LED_1));
 }
 
 /***/
 void setup()
 {
-  //SOIL_HEALTH.soil_moisture_pin = SOIL_MOISTURE_PIN;
-  //Soil.LP_Filter_Settle(&SOIL_HEALTH);
+  pinMode(LED_1, OUTPUT);
+  digitalWrite(LED_1,0);
 
-  pinMode(10, OUTPUT);
-
-  noInterrupts();
-  TCCR1A = 0;
-  TCCR1B = 0;
-  timer1_compare_match = 31249;
-  TCNT1 = timer1_compare_match;
-  TCCR1B |= (1 << CS12);
-  TIMSK1 |= (1 << OCIE1A);
-  interrupts();
+  Timer_1.Init(true);
+  SOIL_HEALTH.soil_moisture_pin = SOIL_MOISTURE_PIN;
+  Soil.LP_Filter_Settle(&SOIL_HEALTH);
 }
 
 /***/
 void loop()
 {
-
-/*
   Soil.Get_Soil_Health(&SOIL_HEALTH);
 
   if(SOIL_HEALTH.soil_state == DRY)
@@ -55,5 +49,4 @@ void loop()
   }
 
   delay(10000);
-*/
 }
