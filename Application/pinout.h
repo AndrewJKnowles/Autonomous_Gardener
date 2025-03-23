@@ -4,9 +4,10 @@
 /********************************
 * @brief Digital Pin Definitions
 *********************************/
-#define D10 10
-#define D6  6
-#define D5  5
+#define LED_1   13
+#define D10     10
+#define D6      6
+#define D5      5
 
 /********************************
 * @brief Analogue Pin Definitions
