@@ -1,3 +1,12 @@
+/************************************************************************
+* @file     Autonomus_Gardener/Application.ino
+* @author   AndrewJKnowles
+* @date     26/03/2025
+* @version  1.0
+* @brief    Available under the GNU GENERAL PUBLIC LICENSE without any 
+*           warranty or liability
+**************************************************************************/
+
 #include <Wire.h>
 
 #include "water_pump.h"
@@ -16,22 +25,36 @@
 static void RTC_Set_Int_Freq(void);
 static void Interrupt_ISR(void);
 
+/*************************
+* @brief Global Variables
+**************************/
+soil_health_t soil_health = {0};
+water_pump_t pump_cfg =
+{
+  .state      = PUMP_OFF,
+  .enable_pin = RELAY_SWITCH
+};
+
+volatile uint32_t seconds_passed = 0;
+volatile bool check_soil = true;
 
 Soil Soil;
 PWR_MNGR PWR_MNGR;
-soil_health_t soil_health = {0};
-volatile uint32_t seconds_passed = 0;
-bool check_soil = false;
+Pump  Pump(&pump_cfg);
 
 //set up function
 void setup()
 {
+#ifdef EN_DEBUGGING
   Serial.begin(9600);
   while (!Serial) ; // wait for serial
+#endif //EN_DEBUGGING
 
-  soil_health.soil_moisture_pin = SOIL_MOISTURE_PIN;
   pinMode(LED_1,OUTPUT);
 
+  soil_health.soil_moisture_pin = SOIL_MOISTURE_PIN;
+  Soil.LP_Filter_Settle(&soil_health);
+  
   attachInterrupt(INTERRUPT_0,Interrupt_ISR,FALLING);
   RTC_Set_Int_Freq();
 }
@@ -42,13 +65,13 @@ void loop()
   if(check_soil)
   {
     Soil.Get_Soil_Health(&soil_health);
-    check_soil = false;
 
-    if(soil_health.soil_state == SATURATED)
+    if(soil_health.soil_state == DRY)
     {
-      //replace with motor on when soil_state == DRY
-      digitalWrite(LED_1, digitalRead(LED_1) ^ 1);
+      Pump.Action_Watering(&pump_cfg);
     }
+
+    check_soil = false;
   }
   
   PWR_MNGR.Enter_Sleep();

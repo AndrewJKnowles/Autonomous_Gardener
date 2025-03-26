@@ -1,3 +1,12 @@
+/************************************************************************
+* @file     Autonomus_Gardener/soil.cpp
+* @author   AndrewJKnowles
+* @date     26/03/2025
+* @version  1.0
+* @brief    Available under the GNU GENERAL PUBLIC LICENSE without any 
+*           warranty or liability
+**************************************************************************/
+
 #include "soil.h"
 
 #include <Arduino.h>
@@ -28,13 +37,13 @@ void Soil::Get_Soil_Health(soil_health_t *soil_record)
   soil_record->moisture_level_adc_raw = (soil_record->moisture_level_adc_raw + soil_record->last_moisture_level_adc_raw)/2;
 
   //apply conversion boundaries
-  if(soil_record->moisture_level_adc_raw < 0)
+  if(soil_record->moisture_level_adc_raw < SOIL_STATE_LOWER_ADC_THRESH)
   {
-    soil_record->moisture_level_adc_raw = 0;
+    soil_record->moisture_level_adc_raw = SOIL_STATE_LOWER_ADC_THRESH;
   }
-  else if(soil_record->moisture_level_adc_raw > 720)
+  else if(soil_record->moisture_level_adc_raw > SOIL_STATE_UPPER_ADC_THRESH)
   {
-    soil_record->moisture_level_adc_raw = 720;
+    soil_record->moisture_level_adc_raw = SOIL_STATE_UPPER_ADC_THRESH;
   }
 
   //convert adc to percentage

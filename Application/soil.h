@@ -1,14 +1,25 @@
+/************************************************************************
+* @file     Autonomus_Gardener/soil.h
+* @author   AndrewJKnowles
+* @date     26/03/2025
+* @version  1.0
+* @brief    Available under the GNU GENERAL PUBLIC LICENSE without any 
+*           warranty or liability
+**************************************************************************/
+
 #ifndef SOIL_H
 #define SOIL_H
 
 #include <stdint.h>
 
-#define SOIL_MOISTURE_M_COEF      (float)0.454545
-#define SOIL_MOISTURE_C_COEF      (float)-227.272724
-#define SOIL_STATE_UPPER_THRESH   60 //%
-#define SOIL_STATE_LOWER_THRESH   30 //%
-#define SOIL_SETTLING_DELAY       5000 //mS
-#define SOIL_SETTLING_REPETITIONS 10
+#define SOIL_MOISTURE_M_COEF         (float)0.64516129
+#define SOIL_MOISTURE_C_COEF          (float)-480.645161
+#define SOIL_STATE_UPPER_THRESH       70 //%
+#define SOIL_STATE_LOWER_THRESH       60 //%
+#define SOIL_STATE_UPPER_ADC_THRESH   900
+#define SOIL_STATE_LOWER_ADC_THRESH   745
+#define SOIL_SETTLING_DELAY           1000 //mS
+#define SOIL_SETTLING_REPETITIONS     30
 
 typedef enum
 {

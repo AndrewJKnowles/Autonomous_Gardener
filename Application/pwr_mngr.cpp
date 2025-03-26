@@ -1,3 +1,12 @@
+/************************************************************************
+* @file     Autonomus_Gardener/pwr_mngr.cpp
+* @author   AndrewJKnowles
+* @date     26/03/2025
+* @version  1.0
+* @brief    Available under the GNU GENERAL PUBLIC LICENSE without any 
+*           warranty or liability
+**************************************************************************/
+
 #include "pwr_mngr.h"
 #include <avr/sleep.h>
 #include <avr/power.h>
