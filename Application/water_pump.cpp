@@ -34,7 +34,7 @@ void Pump::Action_Watering(water_pump_t *pump)
 #endif  //ENABLE_SERIAL_PRINTS
 
   Set_Pump_State(pump, PUMP_ON);
-  delay(5000);
+  delay(10000);
   Set_Pump_State(pump, PUMP_OFF);
 }
 

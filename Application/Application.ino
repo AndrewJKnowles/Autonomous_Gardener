@@ -17,7 +17,12 @@
  
 #define INTERRUPT_0           0             //pin D2
 #define RTC_DEVICE_ID         0x68
+
+#ifdef EN_DEBUGGING
 #define SOIL_CHECK_INTERVAL   10             //s
+#else
+#define SOIL_CHECK_INTERVAL   60             //s
+#endif //EN_DEBUGGING
 
 /*************************************
 * @brief Private Function Proto-types
@@ -57,6 +62,10 @@ void setup()
   
   attachInterrupt(INTERRUPT_0,Interrupt_ISR,FALLING);
   RTC_Set_Int_Freq();
+
+#ifdef EN_DEBUGGING
+  Pump.Action_Watering(&pump_cfg);
+#endif //EN_DEBUGGING
 }
  
 //main loop
@@ -64,13 +73,15 @@ void loop()
 {
   if(check_soil)
   {
+    digitalWrite(LED_1, 1);
     Soil.Get_Soil_Health(&soil_health);
 
     if(soil_health.soil_state == DRY)
     {
       Pump.Action_Watering(&pump_cfg);
     }
-
+    
+    digitalWrite(LED_1, 0);
     check_soil = false;
   }
   
